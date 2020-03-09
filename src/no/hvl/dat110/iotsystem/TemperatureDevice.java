@@ -26,7 +26,7 @@ public class TemperatureDevice {
 
 		t.connect();
 
-		for (int i = 0; i<= COUNT; i++){
+		for (int i = 0; i< COUNT; i++){
 			String temp = Integer.toString(sn.read());
 			t.publish("temperature", temp);
 		}
