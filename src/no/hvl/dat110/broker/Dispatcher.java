@@ -178,7 +178,7 @@ public class Dispatcher extends Stopable {
             session = storage.getSession(s);
             if (session != null) {
                 session.send(msg);
-            } else {
+            } if(session.noConnection(session)){
                String u = session.getUser();
                storage.addBufferedMessage(u, msg);
             }

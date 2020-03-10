@@ -50,4 +50,12 @@ public class ClientSession {
 		return msg;
 	}
 
+	public boolean noConnection(ClientSession clientSession){
+		boolean n = false;
+		if (clientSession.connection == null ){
+			n = true;
+		}
+		return n;
+	}
+
 }
