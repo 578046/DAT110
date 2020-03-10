@@ -36,7 +36,6 @@ public class TemperatureDevice {
 
 		System.out.println("Temperature device stopping ... ");
 
-		throw new UnsupportedOperationException(TODO.method());
 
 	}
 }
