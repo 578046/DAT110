@@ -10,22 +10,15 @@ public class PublishMsg extends Message {
 	// Constructor, get/set-methods, and toString method
 	// as described in the project text
 	
-	private String user;
+	
 	private String topic;
 	private String message;
 	
 	public PublishMsg(String user, String topic, String message) {
-		this.user = user;
+		super(MessageType.PUBLISH, user);
 		this.topic = topic;
 		this.message = message;
-	}
-
-	public String getUser() {
-		return user;
-	}
-
-	public void setUser(String user) {
-		this.user = user;
+		
 	}
 
 	public String getTopic() {
@@ -46,7 +39,7 @@ public class PublishMsg extends Message {
 
 	@Override
 	public String toString() {
-		return "PublishMsg [user=" + user + ", topic=" + topic + ", message=" + message + "]";
+		return "PublishMsg [topic=" + topic + ", message=" + message + "]";
 	}
 	
 	

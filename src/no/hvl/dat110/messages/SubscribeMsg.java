@@ -10,21 +10,13 @@ public class SubscribeMsg extends Message {
 	// Constructor, get/set-methods, and toString method
 	// as described in the project text
 	
-	private String user;
 	private String topic;
 	
 	public SubscribeMsg(String user, String topic) {
-		this.user = user;
+		super(MessageType.SUBSCRIBE, user);
 		this.topic = topic;
 	}
 
-	public String getUser() {
-		return user;
-	}
-
-	public void setUser(String user) {
-		this.user = user;
-	}
 
 	public String getTopic() {
 		return topic;
@@ -36,7 +28,7 @@ public class SubscribeMsg extends Message {
 
 	@Override
 	public String toString() {
-		return "SubscribeMsg [user=" + user + ", topic=" + topic + "]";
+		return "SubscribeMsg [topic=" + topic + "]";
 	}
 	
 	
