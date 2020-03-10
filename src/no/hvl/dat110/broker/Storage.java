@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import no.hvl.dat110.client.Client;
 import no.hvl.dat110.common.Logger;
+import no.hvl.dat110.messages.Message;
 import no.hvl.dat110.messagetransport.Connection;
 
 public class Storage {
@@ -18,9 +20,16 @@ public class Storage {
 
 	protected ConcurrentHashMap<String, ClientSession> clients;
 
+	// hashMap to save buffered messages
+	// maps a user to a set of messages sent while the user was
+	// unconnected, corresponding to the topics a users ClientSession is subscribed to
+
+	protected ConcurrentHashMap<String, Set<Message>> bufferedMessages;
+
 	public Storage() {
 		subscriptions = new ConcurrentHashMap<String, Set<String>>();
 		clients = new ConcurrentHashMap<String, ClientSession>();
+		bufferedMessages = new ConcurrentHashMap<String, Set<Message>>();
 	}
 
 	public Collection<ClientSession> getSessions() {
@@ -61,6 +70,30 @@ public class Storage {
 		ClientSession session = clients.get(user);
 		clients.remove(user, session);
 
+	}
+
+	public void addBufferedMessage(String user, Message message){
+
+			Set<Message> s = ConcurrentHashMap.newKeySet();
+			s.add(message);
+			bufferedMessages.put(user, s);
+	}
+
+	public Set<Message> getBufferedMessages(String user){
+
+		Set<Message> m = bufferedMessages.get(user);
+		return m;
+
+	}
+
+	public boolean hasBufferedMessages(String user){
+
+		return(bufferedMessages.containsKey(user));
+	}
+
+	public void removeBufferedMessage(String user, Message message){
+
+		bufferedMessages.remove(user, message);
 	}
 
 	public void createTopic(String topic) {

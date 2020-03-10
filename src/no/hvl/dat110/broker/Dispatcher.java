@@ -1,5 +1,6 @@
 package no.hvl.dat110.broker;
 
+import java.util.Iterator;
 import java.util.Set;
 import java.util.Collection;
 
@@ -7,6 +8,7 @@ import no.hvl.dat110.common.Logger;
 import no.hvl.dat110.common.Stopable;
 import no.hvl.dat110.messages.*;
 import no.hvl.dat110.messagetransport.Connection;
+import no.hvl.dat110.messagetransport.MessagingClient;
 
 public class Dispatcher extends Stopable {
 
@@ -90,6 +92,15 @@ public class Dispatcher extends Stopable {
 
         Logger.log("onConnect:" + msg.toString());
 
+        if(storage.hasBufferedMessages(user)){
+            Set<Message> m = storage.getBufferedMessages(user);
+            ClientSession session = storage.getSession(user);
+            for(Iterator<Message> i = m.iterator(); i.hasNext();){
+                    session.send(i.next());
+                    storage.removeBufferedMessage(user, i.next());
+            }
+        }
+
         storage.addClientSession(user, connection);
 
     }
@@ -167,8 +178,11 @@ public class Dispatcher extends Stopable {
             session = storage.getSession(s);
             if (session != null) {
                 session.send(msg);
-
+            } else {
+               String u = session.getUser();
+               storage.addBufferedMessage(u, msg);
             }
+
 
         }
     }
